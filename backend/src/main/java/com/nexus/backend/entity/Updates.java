@@ -1,9 +1,10 @@
 package com.nexus.backend.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.nexus.backend.entity.preferences.Category;
+import com.nexus.backend.entity.preferences.Industry;
+import com.nexus.backend.entity.preferences.Ministry;
+import com.nexus.backend.entity.preferences.State;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -25,10 +26,21 @@ public class Updates {
     private LocalDateTime date;
     private Integer uploaderId;
 
-    private String State;
-    private String Ministry;
-    private String Industry;
-    private String Category;
+    @ManyToOne
+    @JoinColumn(name = "ministry_id")
+    private Ministry ministry;
+
+    @ManyToOne
+    @JoinColumn(name = "industry_id")
+    private Industry industry;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "state_id")
+    private State state;
 
     private Integer actId;
 }

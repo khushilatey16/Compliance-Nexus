@@ -4,7 +4,11 @@ package com.nexus.backend.service;
 import com.nexus.backend.config.TokenProvider;
 import com.nexus.backend.dto.UpdateUserRequest;
 import com.nexus.backend.entity.User;
-import com.nexus.backend.repository.UserRepository;
+import com.nexus.backend.entity.preferences.Category;
+import com.nexus.backend.entity.preferences.Industry;
+import com.nexus.backend.entity.preferences.Ministry;
+import com.nexus.backend.entity.preferences.State;
+import com.nexus.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
@@ -14,12 +18,20 @@ import java.util.Optional;
 @Service
 public class UserServiceImplementation implements UserService {
 
-
+    @Autowired
     private UserRepository userRepository;
 
-    public UserServiceImplementation(UserRepository userRepository){
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private IndustryRepository industryRepository;
+
+    @Autowired
+    private StateRepository stateRepository;
+
+    @Autowired
+    private MinistryRepository ministryRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Autowired
     private TokenProvider tokenProvider;
@@ -51,26 +63,41 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public User updateUser(Integer userId, UpdateUserRequest req) throws Exception {
-
         User user = findUserById(userId);
 
-        if (req.getUsername()!= null)
+        if (req.getUsername() != null) {
             user.setUsername(req.getUsername());
-        if (req.getCategory()!= null)
-            user.setCategory(req.getCategory());
-        if (req.getIndustry()!= null)
-            user.setIndustry(req.getIndustry());
-        if (req.getMinistry()!= null)
-            user.setMinistry(req.getMinistry());
-        if (req.getContact()!= null)
+        }
+        if (req.getMinistryId() != null) {
+            Ministry ministry = ministryRepository.findById(req.getMinistryId())
+                    .orElseThrow(() -> new Exception("Ministry not found"));
+            user.setMinistry(ministry);
+        }
+        if (req.getIndustryId() != null) {
+            Industry industry = industryRepository.findById(req.getIndustryId())
+                    .orElseThrow(() -> new Exception("Industry not found"));
+            user.setIndustry(industry);
+        }
+        if (req.getCategoryId() != null) {
+            Category category = categoryRepository.findById(req.getCategoryId())
+                    .orElseThrow(() -> new Exception("Category not found"));
+            user.setCategory(category);
+        }
+        if (req.getStateId() != null) {
+            State state = stateRepository.findById(req.getStateId())
+                    .orElseThrow(() -> new Exception("State not found"));
+            user.setState(state);
+        }
+        if (req.getContact() != null) {
             user.setContact(req.getContact());
-        if (req.getState()!= null)
-            user.setState(req.getState());
-        if (req.getOrganization()!= null)
+        }
+        if (req.getOrganization() != null) {
             user.setOrganization(req.getOrganization());
+        }
 
         return userRepository.save(user);
     }
+
 
     @Override
     public User searchUser(String email) {

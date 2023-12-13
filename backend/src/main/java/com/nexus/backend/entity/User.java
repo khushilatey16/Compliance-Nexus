@@ -1,9 +1,10 @@
 package com.nexus.backend.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.nexus.backend.entity.preferences.Category;
+import com.nexus.backend.entity.preferences.Industry;
+import com.nexus.backend.entity.preferences.Ministry;
+import com.nexus.backend.entity.preferences.State;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -22,18 +23,29 @@ public class User {
     private String email;
     private String password;
     private boolean isAdmin;
-
-    private String ministry;
-    private String industry;
-    private String category;
-    private String state;
-
     private String organization;
     private String contact;
 
+    @ManyToOne
+    @JoinColumn(name = "ministry_id")
+    private Ministry ministry;
+
+    @ManyToOne
+    @JoinColumn(name = "industry_id")
+    private Industry industry;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "state_id")
+    private State state;
 
     @Override
     public int hashCode() {
         return super.hashCode();
     }
+
+
 }

@@ -1,9 +1,7 @@
 package com.nexus.backend.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -17,6 +15,10 @@ public class Compliance {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    @ManyToOne
+    @JsonBackReference
+    private Act act;
 
     private String description;
     private String reference;

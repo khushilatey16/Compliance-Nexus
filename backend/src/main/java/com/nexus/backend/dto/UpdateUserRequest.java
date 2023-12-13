@@ -12,12 +12,12 @@ import lombok.Setter;
 public class UpdateUserRequest {
 
     private String username;
-    private String ministry;
-    private String industry;
-    private String category;
-    private String state;
-    private String organization;
+    private Integer ministryId;
+    private Integer industryId;
+    private Integer categoryId;
+    private Integer stateId;
     private String contact;
-
+    private String organization;
 
 }
+
