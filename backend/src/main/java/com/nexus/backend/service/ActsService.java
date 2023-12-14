@@ -7,8 +7,10 @@ import com.nexus.backend.entity.preferences.Industry;
 import com.nexus.backend.entity.preferences.Ministry;
 import com.nexus.backend.entity.preferences.State;
 import com.nexus.backend.repository.*;
+import com.nexus.backend.specification.ActSpecification;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -34,26 +36,6 @@ public class ActsService {
 
     @Autowired
     private StateRepository stateRepository;
-
-//    public Act createAct(Act newAct, Integer userId) {
-//        newAct.setDate(LocalDateTime.now());
-//        newAct.setUploaderId(userId);
-//
-//        // Set category, ministry, industry, and state
-//        newAct.setCategory(categoryRepository.getById(newAct.getCategory().getId())); // Assuming you have a CategoryRepository
-//        newAct.setMinistry(ministryRepository.getById(newAct.getMinistry().getId())); // Assuming you have a MinistryRepository
-//        newAct.setIndustry(industryRepository.getById(newAct.getIndustry().getId())); // Assuming you have an IndustryRepository
-//        newAct.setState(stateRepository.getById(newAct.getState().getId())); // Assuming you have a StateRepository
-//
-//        List<Compliance> complianceList = newAct.getComplianceSet();
-//        newAct = actRepository.save(newAct);
-//
-//        for (Compliance compliance : complianceList) {
-//            compliance.setAct(newAct);
-//        }
-//        complianceRepository.saveAll(complianceList);
-//        return newAct;
-//    }
 
     public Act createAct(Act newAct, Integer userId) {
         newAct.setDate(LocalDateTime.now());
@@ -100,5 +82,15 @@ public class ActsService {
             }
         }
     }
+
+    public List<Act> searchActs(String searchString) {
+        Specification<Act> titleSpecification = ActSpecification.titleContains(searchString);
+
+        Specification<Act> finalSpecification = Specification.where(titleSpecification);
+
+        return actRepository.findAll(finalSpecification);
+    }
+
+
 }
 

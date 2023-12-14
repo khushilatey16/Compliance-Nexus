@@ -41,6 +41,12 @@ public class ActsController {
         return new ResponseEntity<>("Act deleted successfully", HttpStatus.OK);
     }
 
+    @GetMapping("/search/{searchString}")
+    public ResponseEntity<List<Act>> searchActs(@PathVariable String searchString) {
+        List<Act> result = actsService.searchActs(searchString);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     @GetMapping("/all")
     public List<Act> getAllActs() {
         List<Act> allActs = actRepository.findAllByOrderByDateDesc();
