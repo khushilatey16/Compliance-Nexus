@@ -14,4 +14,6 @@ public interface UserService {
     public User updateUser (Integer userId, UpdateUserRequest req) throws Exception;
 
     public User searchUser(String email);
+
+
 }

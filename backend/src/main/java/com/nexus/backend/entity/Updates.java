@@ -20,7 +20,6 @@ public class Updates {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-
     private String title;
     private String description;
     private LocalDateTime date;
@@ -42,5 +41,4 @@ public class Updates {
     @JoinColumn(name = "state_id")
     private State state;
 
-    private Integer actId;
 }
