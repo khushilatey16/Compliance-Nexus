@@ -9,6 +9,7 @@ import com.nexus.backend.entity.preferences.Industry;
 import com.nexus.backend.entity.preferences.Ministry;
 import com.nexus.backend.entity.preferences.State;
 import com.nexus.backend.repository.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
@@ -68,36 +69,45 @@ public class UserServiceImplementation implements UserService {
         if (req.getUsername() != null) {
             user.setUsername(req.getUsername());
         }
+
         if (req.getMinistryId() != null) {
             Ministry ministry = ministryRepository.findById(req.getMinistryId())
-                    .orElseThrow(() -> new Exception("Ministry not found"));
+                    .orElseThrow(() -> new EntityNotFoundException("Ministry not found with ID: " + req.getMinistryId()));
             user.setMinistry(ministry);
         }
+
         if (req.getIndustryId() != null) {
             Industry industry = industryRepository.findById(req.getIndustryId())
-                    .orElseThrow(() -> new Exception("Industry not found"));
+                    .orElseThrow(() -> new EntityNotFoundException("Industry not found with ID: " + req.getIndustryId()));
             user.setIndustry(industry);
         }
+
         if (req.getCategoryId() != null) {
             Category category = categoryRepository.findById(req.getCategoryId())
-                    .orElseThrow(() -> new Exception("Category not found"));
+                    .orElseThrow(() -> new EntityNotFoundException("Category not found with ID: " + req.getCategoryId()));
             user.setCategory(category);
         }
+
         if (req.getStateId() != null) {
             State state = stateRepository.findById(req.getStateId())
-                    .orElseThrow(() -> new Exception("State not found"));
+                    .orElseThrow(() -> new EntityNotFoundException("State not found with ID: " + req.getStateId()));
             user.setState(state);
         }
+
         if (req.getContact() != null) {
             user.setContact(req.getContact());
         }
+
         if (req.getOrganization() != null) {
             user.setOrganization(req.getOrganization());
         }
 
+        if (req.getIsAdmin() != null) {
+            user.setIsAdmin(req.getIsAdmin());
+        }
+
         return userRepository.save(user);
     }
-
 
     @Override
     public User searchUser(String email) {

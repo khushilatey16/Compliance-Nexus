@@ -28,6 +28,9 @@ public class ActsController {
     @PostMapping("/create")
     public ResponseEntity<Act> createAct(@RequestBody Act newAct, @RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserProfile(jwt);
+        if (user.getIsAdmin() == false){
+            return new ResponseEntity<>(newAct, HttpStatus.BAD_REQUEST);
+        }
         Act createdAct = actsService.createAct(newAct, user.getId());
         return new ResponseEntity<>(createdAct, HttpStatus.CREATED);
     }

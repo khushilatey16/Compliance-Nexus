@@ -18,6 +18,7 @@ public class UpdateUserRequest {
     private Integer stateId;
     private String contact;
     private String organization;
+    private Boolean isAdmin;
 
 }
 
