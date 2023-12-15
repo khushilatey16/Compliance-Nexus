@@ -41,4 +41,7 @@ public class Updates {
     @JoinColumn(name = "state_id")
     private State state;
 
+    @Column(name = "pdf_path")
+    private String pdfPath;
+
 }
